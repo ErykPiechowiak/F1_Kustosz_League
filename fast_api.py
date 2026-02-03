@@ -7,7 +7,7 @@ from typing import Optional
 app = FastAPI()
 
 # PROSTY TOKEN
-TOKEN = "f1-league-secret-123"
+TOKEN = "kustosze"
 security = HTTPBearer()
 
 
@@ -36,11 +36,12 @@ def get_results(
     return [
         {
             "id": r.id,
-            "driver": r.driver,
-            "team": r.team,
-            "race": r.race,
+            "driver": r.player_name,
+            "team": r.constructor_name,
+            "track_name": r.track_name,
             "position": r.position,
-            "gap_to_leader": r.gap_to_leader,
+            "time": r.time,
+            "fastest_lap": r.fastest_lap,
             "points": r.points,
         }
         for r in results
