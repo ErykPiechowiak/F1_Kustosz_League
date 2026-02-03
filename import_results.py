@@ -28,7 +28,7 @@ points_sprint = {
 }
 
 def main():
-    race_data = pd.read_csv("race_results/event_187678_tier_1_results.csv")
+    race_data = pd.read_csv("race_results/event_182441_tier_1_results.csv")
     for record in race_data.to_dict(orient="records"):
         if pd.isna(list(record.values())).any():
             print("NA: ",sep=" ")

@@ -42,7 +42,7 @@ def get_session_direct():
 
 def main():
     print("OK")
-    #Base.metadata.create_all(engine)
+    Base.metadata.create_all(engine)
     #with Session(engine) as session:
     #s    result = RaceResult(
     #        driver="Bortoleto",

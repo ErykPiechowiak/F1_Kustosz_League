@@ -7,10 +7,8 @@ def race_results_view(page: ft.Page):
     def load_results(e):
         race = dropdown.value
         table.rows.clear()
-        print(f"DEBUG: RELOAD! race: {race}")
         for r in fetch_results():
             if r['track_name'] == race:
-                print(f"{r['track_name']} vs selected: {race}")
                 table.rows.append(
                     ft.DataRow(
                         cells=[
