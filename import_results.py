@@ -1,7 +1,20 @@
 import pandas as pd
+from sqlalchemy import select, func
 from database import RaceResult, get_session_direct
+from pathlib import Path
 
 is_sprint = False
+SEASON = 1
+
+def clean_trailing_commas(file_path: Path):
+    lines = file_path.read_text().splitlines()
+
+    cleaned = [
+        line[:-1] if line.endswith(",") else line
+        for line in lines
+    ]
+
+    file_path.write_text("\n".join(cleaned))
 
 points_normal = {
     1 : 25,
@@ -27,34 +40,78 @@ points_sprint = {
     8 : 1
 }
 
+def get_round_nr():
+    #get lastest round nr from database (from selected SEASON)
+    with get_session_direct() as session:
+        last_round = session.execute(
+            select(func.max(RaceResult.round_nr))
+            .where(RaceResult.season == SEASON)
+        ).scalar()
+
+        round_nr = 1 if last_round is None else last_round + 1
+    return round_nr    
+
 def main():
-    race_data = pd.read_csv("race_results/event_182441_tier_1_results.csv")
-    for record in race_data.to_dict(orient="records"):
-        if pd.isna(list(record.values())).any():
-            print("NA: ",sep=" ")
-            print(record)
-            continue
-        print(record["PlayerName"])
-        with get_session_direct() as session:
-            points_ = 0
-            if is_sprint:
-                points_ = points_sprint[record["Position"]] if record["Position"] in points_sprint else 0
-            else:
-                points_ = points_normal[record["Position"]] if record["Position"] in points_normal else 0
-            result = RaceResult(
-                player_name=record["PlayerName"],
-                constructor_name=record["ConstructorName"],
-                track_name=record["TrackName"],
-                position=record["Position"],
-                fastest_lap=record["FastestLap"],
-                has_fastest_lap = record["HasFastestLap"],
-                time = record["Time"],
-                points = points_
-            )
-                
-            session.add(result)
-            session.commit()
-            print("Dodano rekord")
+
+
+    #race_data = pd.read_csv("race_results/event_182441_tier_1_results.csv")
+
+    folder = Path("race_results")
+
+    for file in folder.glob("*.csv"):
+        if "qualifying" not in file.name:
+            if file.name.endswith("_done.csv"):
+                continue
+
+            print(f"Importing: {file.name}")
+
+            try:
+                # 1. fix CSV
+                clean_trailing_commas(file)
+
+                # 2. pandas
+                race_data = pd.read_csv(file)
+                for record in race_data.to_dict(orient="records"):
+                    if pd.isna(list(record.values())).any():
+                        print("NA: ",sep=" ")
+                        print(record)
+                        continue
+                    print(record["PlayerName"])
+                    with get_session_direct() as session:
+                        points_ = 0
+                        if is_sprint:
+                            points_ = points_sprint[record["Position"]] if record["Position"] in points_sprint else 0
+                            track_name_ = f"{record["TrackName"]}-sprint"
+                        else:
+                            points_ = points_normal[record["Position"]] if record["Position"] in points_normal else 0
+                            track_name_ = f"{record["TrackName"]}"
+
+                        result = RaceResult(
+                            season = SEASON,
+                            round_nr = get_round_nr(),
+                            player_name=record["PlayerName"],
+                            constructor_name=record["ConstructorName"],
+                            track_name = track_name_,
+                            position=record["Position"],
+                            fastest_lap=record["FastestLap"],
+                            has_fastest_lap = record["HasFastestLap"],
+                            time = record["Time"],
+                            points = points_
+                        )
+
+                        session.add(result)
+                        session.commit()
+                        print("Added record")
+
+                print(f"OK: {file.name}")
+
+                # 3. rename
+                done_file = file.with_name(file.stem + "_done.csv")
+                file.rename(done_file)
+
+            except Exception as e:
+                print(f"error in {file.name}: {e}")
+
 
 if __name__ == "__main__":
     main()

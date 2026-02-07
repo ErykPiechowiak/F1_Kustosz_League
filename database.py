@@ -15,6 +15,9 @@ class RaceResult(Base):
     __tablename__ = "race_results"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    
+    season: Mapped[int] = mapped_column(Integer, nullable = False)
+    round_nr: Mapped[int] = mapped_column(Integer, nullable = False)
 
     player_name: Mapped[str] = mapped_column(String(50), nullable=False)
     constructor_name: Mapped[str] = mapped_column(String(50), nullable=False)

@@ -18,13 +18,15 @@ def championship_view(page: ft.Page):
             ],
             rows=[],
     )  
+
     def load():
         #Load championship results
-        results_general.clear()
+        results_general.clear() 
         driver_info.clear()
 
         results = fetch_results()
-        if dropdown_championship.value == "Individual":
+        #-------------------------------- DRIVERS CHAMPIONSHIP VIEW -------------------------------------------
+        if dropdown_championship.value == "Drivers":
             table.rows.clear()
             table.columns = [
                 ft.DataColumn(ft.Text("Pos", weight="bold")),
@@ -33,8 +35,9 @@ def championship_view(page: ft.Page):
                 ft.DataColumn(ft.Text("Points", weight="bold"))
             ]
             for r in results:
-                results_general[r["driver"]] = results_general.get(r["driver"], 0) + r["points"]
-                driver_info[r["driver"]] = r["team"]
+                if str(r["season"]) == dropdown_season.value:
+                    results_general[r["driver"]] = results_general.get(r["driver"], 0) + r["points"]
+                    driver_info[r["driver"]] = r["team"]
 
             sorted_results = sorted(
                 results_general.items(),
@@ -53,9 +56,11 @@ def championship_view(page: ft.Page):
                         ]
                     )
                 )
+        #-------------------------------- TEAMS CHAMPIONSHIP VIEW -------------------------------------------
         else:
             for r in results:
-                results_general[r["team"]] = results_general.get(r["team"], 0) + r["points"]
+                if str(r["season"]) == dropdown_season.value:
+                    results_general[r["team"]] = results_general.get(r["team"], 0) + r["points"]
 
             sorted_results = sorted(
                 results_general.items(),
@@ -93,7 +98,7 @@ def championship_view(page: ft.Page):
         #results = fetch_results()
         seasons = ["1","2"]
         dropdown_season.options = [ft.dropdown.Option(r) for r in seasons]
-        championships = ["Individual", "Teams"]
+        championships = ["Drivers", "Constructors"]
         dropdown_championship.options = [ft.dropdown.Option(r) for r in championships]
         page.update()
 

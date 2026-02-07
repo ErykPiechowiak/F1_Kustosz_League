@@ -24,7 +24,7 @@ def main(page: ft.Page):
                 ft.Row(
                     [
                         ft.Button("Championship", on_click=show_championship),
-                        ft.Button("Race results", on_click=show_race_results),
+                        ft.Button("GP results", on_click=show_race_results),
                     ]
                 ),
             ],

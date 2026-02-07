@@ -5,10 +5,10 @@ from api import fetch_results
 def race_results_view(page: ft.Page):
 
     def load_results(e):
-        race = dropdown.value
+        race = dropdown_race.value
         table.rows.clear()
         for r in fetch_results():
-            if r['track_name'] == race:
+            if r['track_name'] == race and str(r['season']) == dropdown_season.value:
                 table.rows.append(
                     ft.DataRow(
                         cells=[
@@ -22,9 +22,19 @@ def race_results_view(page: ft.Page):
                     )
                 )
         page.update()
-        
+
+    def update_race_dropdown():
+        table.rows.clear()
+        results = fetch_results()
+        results_selected_season = []
+        for r in results:
+            if str(r["season"]) == dropdown_season.value:
+                results_selected_season.append(r)
+        races = sorted({r["track_name"] for r in results_selected_season})
+        dropdown_race.options = [ft.dropdown.Option(r) for r in races]   
     
-    dropdown = ft.Dropdown(label="Select race",on_select=load_results)
+    dropdown_race = ft.Dropdown(label="Select race",on_select=load_results)
+    dropdown_season = ft.Dropdown(label="Select season",on_select=update_race_dropdown)
 
     table = ft.DataTable(
         border=ft.Border.all(1, ft.Colors.GREY_400),
@@ -42,20 +52,27 @@ def race_results_view(page: ft.Page):
         rows=[],
     )
 
-    def load_races():
-        results = fetch_results()
-        races = sorted({r["track_name"] for r in results})
-        dropdown.options = [ft.dropdown.Option(r) for r in races]
+
+
+    def init_season_dropdown():
+        #season dropdown
+        seasons = ["1","2"]
+        dropdown_season.options = [ft.dropdown.Option(r) for r in seasons]
         page.update()
 
-    
 
-    load_races()
+    init_season_dropdown()
 
     return ft.Column(
         [
-            ft.Text("Race results", size=24, weight="bold"),
-            dropdown,
+            ft.Text("GP results", size=24, weight="bold"),
+                ft.Row(
+                [
+                    dropdown_season,
+                    dropdown_race,
+                ],
+                spacing = 100
+                ),
             ft.Divider(),
             table,
         ],

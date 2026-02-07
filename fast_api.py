@@ -36,6 +36,8 @@ def get_results(
     return [
         {
             "id": r.id,
+            "season": r.season,
+            "round_nr": r.round_nr,
             "driver": r.player_name,
             "team": r.constructor_name,
             "track_name": r.track_name,
