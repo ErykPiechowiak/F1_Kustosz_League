@@ -1,7 +1,13 @@
 import requests
+import json
 
-API_URL = "http://127.0.0.1:8000"
-TOKEN = "kustosze"
+
+
+with open('credentials.json','r',encoding='utf-8') as file:
+    data = json.load(file)
+
+API_URL = data['api_url']
+TOKEN = data['api_token']
 
 
 def fetch_results():
@@ -11,6 +17,19 @@ def fetch_results():
 
     response = requests.get(
         f"{API_URL}/results",
+        headers=headers,
+        timeout=5
+    )
+    response.raise_for_status()
+    return response.json()
+
+def fetch_quali_results():
+    headers = {
+        "Authorization": f"Bearer {TOKEN}"
+    }
+
+    response = requests.get(
+        f"{API_URL}/quali_results",
         headers=headers,
         timeout=5
     )

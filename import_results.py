@@ -1,6 +1,6 @@
 import pandas as pd
 from sqlalchemy import select, func
-from database import RaceResult, get_session_direct
+from database import RaceResult, get_session_direct, QualiResult
 from pathlib import Path
 
 is_sprint = False
@@ -40,20 +40,24 @@ points_sprint = {
     8 : 1
 }
 
-def get_round_nr():
+def get_round_nr(quali:bool = False):
     #get lastest round nr from database (from selected SEASON)
     with get_session_direct() as session:
-        last_round = session.execute(
-            select(func.max(RaceResult.round_nr))
-            .where(RaceResult.season == SEASON)
+        if quali:
+            last_round = session.execute(
+            select(func.max(QualiResult.round_nr))
+            .where(QualiResult.season == SEASON)
         ).scalar()
+        else:
+            last_round = session.execute(
+                select(func.max(RaceResult.round_nr))
+                .where(RaceResult.season == SEASON)
+            ).scalar()
 
         round_nr = 1 if last_round is None else last_round + 1
     return round_nr    
 
 def main():
-
-
     #race_data = pd.read_csv("race_results/event_182441_tier_1_results.csv")
 
     folder = Path("race_results")
@@ -97,6 +101,52 @@ def main():
                             has_fastest_lap = record["HasFastestLap"],
                             time = record["Time"],
                             points = points_
+                        )
+
+                        session.add(result)
+                        session.commit()
+                        print("Added record")
+
+                print(f"OK: {file.name}")
+
+                # 3. rename
+                done_file = file.with_name(file.stem + "_done.csv")
+                file.rename(done_file)
+
+            except Exception as e:
+                print(f"error in {file.name}: {e}")
+        else:
+            if file.name.endswith("_done.csv"):
+                continue
+
+            print(f"Importing: {file.name}")
+
+            try:
+                # 1. fix CSV
+                clean_trailing_commas(file)
+
+                # 2. pandas
+                race_data = pd.read_csv(file)
+                for record in race_data.to_dict(orient="records"):
+                    if pd.isna(list(record.values())).any():
+                        print("NA: ",sep=" ")
+                        print(record)
+                        continue
+                    print(record["PlayerName"])
+                    with get_session_direct() as session:
+                        points_ = 0
+                        if is_sprint:
+                            track_name_ = f"{record["TrackName"]}-sprint"
+                        else:
+                            track_name_ = f"{record["TrackName"]}"
+
+                        result = QualiResult(
+                            season = SEASON,
+                            round_nr = get_round_nr(True),
+                            player_name=record["PlayerName"],
+                            constructor_name=record["ConstructorName"],
+                            track_name = track_name_,
+                            quali_time=record["QualifyingTime"],
                         )
 
                         session.add(result)

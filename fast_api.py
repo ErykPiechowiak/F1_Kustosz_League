@@ -1,13 +1,14 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from database import RaceResult, get_session
+from database import RaceResult, get_session, QualiResult
 from typing import Optional
+import os
 
 app = FastAPI()
 
 # PROSTY TOKEN
-TOKEN = "kustosze"
+TOKEN = os.getenv("API_TOKEN")
 security = HTTPBearer()
 
 
@@ -49,3 +50,25 @@ def get_results(
         for r in results
     ]
 
+@app.get("/quali_results", dependencies=[Depends(check_token)])
+def get_quali_results(
+    track_name: Optional[str] = None,
+    db: Session = Depends(get_session)):
+    query = db.query(QualiResult)
+    if track_name:
+        query = query.filter(QualiResult.track_name == track_name)
+        
+    results = query.all()
+
+    return [
+        {
+            "id": r.id,
+            "season": r.season,
+            "round_nr": r.round_nr,
+            "driver": r.player_name,
+            "team": r.constructor_name,
+            "track_name": r.track_name,
+            "quali_time": r.quali_time,
+        }
+        for r in results
+    ]

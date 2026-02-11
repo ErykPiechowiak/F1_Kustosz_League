@@ -1,0 +1,21 @@
+TrackName,Tier,PlayerName,Time,Points,Position,Penalty,FastestLap,HasFastestLap,ConstructorName,PenaltyPointsApplied,IsReserve,IsAi
+Abu Dhabi,1,Erzkoy,00:31:37.5580000,25,1,0,00:01:27.4360000,True,Red Bull,0,False,False
+Abu Dhabi,1,piotrek_player,00:31:43.8500000,18,2,0,00:01:28.5090000,False,McLaren,0,False,False
+Abu Dhabi,1,Gabriel Bortoleto,00:32:00.6060000,15,3,0,00:01:30.8210000,False,Kick Sauber,0,False,True
+Abu Dhabi,1,,00:32:02.6570000,12,4,0,00:01:30.9920000,False,World Car,0,False,True
+Abu Dhabi,1,George Russell,00:32:11.6940000,10,5,0,00:01:31.0900000,False,Mercedes-AMG Petronas,0,False,True
+Abu Dhabi,1,Fernando Alonso,00:32:13.8180000,8,6,0,00:01:31.1750000,False,Aston Martin,0,False,True
+Abu Dhabi,1,Yuki Tsunoda,00:32:14.4940000,6,7,0,00:01:31.4280000,False,Visa Cash App RB,0,False,True
+Abu Dhabi,1,Charles Leclerc,00:32:14.9560000,4,8,0,00:01:31.4290000,False,Ferrari,0,False,True
+Abu Dhabi,1,Oliver Bearman,00:32:15.7410000,2,9,0,00:01:31.8460000,False,Haas,0,False,True
+Abu Dhabi,1,Lando Norris,00:32:16.1180000,1,10,0,00:01:31.6300000,False,McLaren,0,False,True
+Abu Dhabi,1,Pierre Gasly,00:32:17.1510000,0,11,0,00:01:31.3120000,False,Alpine,0,False,True
+Abu Dhabi,1,Lance Stroll,00:32:19.7920000,0,12,0,00:01:32.4590000,False,Aston Martin,0,False,True
+Abu Dhabi,1,Carlos Sainz,00:32:24.2680000,0,13,0,00:01:33.1030000,False,Williams,0,False,True
+Abu Dhabi,1,Esteban Ocon,00:32:24.6870000,0,14,0,00:01:32.0600000,False,Haas,0,False,True
+Abu Dhabi,1,Liam Lawson,00:32:25.1200000,0,15,0,00:01:32.4000000,False,Red Bull,0,False,True
+Abu Dhabi,1,Alex Albon,00:32:25.3020000,0,16,0,00:01:32.2600000,False,Williams,0,False,True
+Abu Dhabi,1,Nico Hulkenberg,00:32:25.6570000,0,17,0,00:01:31.5220000,False,Kick Sauber,0,False,True
+Abu Dhabi,1,Isack Hadjar,00:32:28.1890000,0,18,0,00:01:32.4600000,False,Visa Cash App RB,0,False,True
+Abu Dhabi,1,e1pege,00:32:33.2050000,0,19,0,00:01:29.2400000,False,Ferrari,0,False,False
+Abu Dhabi,1,marselantuan,00:13:22.7720000,0,20,0,00:01:41.8590000,False,Red Bull,0,False,False

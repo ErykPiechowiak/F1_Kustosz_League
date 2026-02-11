@@ -29,6 +29,19 @@ class RaceResult(Base):
     time: Mapped[String] = mapped_column(String)  # np. +12.345 sek
     points: Mapped[int] = mapped_column(Integer, nullable=False)
 
+class QualiResult(Base):
+    __tablename__ = "quali_results"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    
+    season: Mapped[int] = mapped_column(Integer, nullable = False)
+    round_nr: Mapped[int] = mapped_column(Integer, nullable = False)
+
+    player_name: Mapped[str] = mapped_column(String(50), nullable=False)
+    constructor_name: Mapped[str] = mapped_column(String(50), nullable=False)
+    track_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    quali_time: Mapped[String] = mapped_column(String)
+
 
 # 4. Tworzenie tabeli
 #Base.metadata.create_all(engine)
