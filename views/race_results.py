@@ -69,8 +69,10 @@ def race_results_view(page: ft.Page):
         results_selected_season = []
         for r in results:
             if str(r["season"]) == dropdown_season.value:
+                print(r)
                 results_selected_season.append(r)
         races = sorted({r["track_name"] for r in results_selected_season})
+
         dropdown_race.options = [ft.dropdown.Option(r) for r in races]   
     
 

@@ -40,22 +40,10 @@ points_sprint = {
     8 : 1
 }
 
-def get_round_nr(quali:bool = False):
-    #get lastest round nr from database (from selected SEASON)
-    with get_session_direct() as session:
-        if quali:
-            last_round = session.execute(
-            select(func.max(QualiResult.round_nr))
-            .where(QualiResult.season == SEASON)
-        ).scalar()
-        else:
-            last_round = session.execute(
-                select(func.max(RaceResult.round_nr))
-                .where(RaceResult.season == SEASON)
-            ).scalar()
-
-        round_nr = 1 if last_round is None else last_round + 1
-    return round_nr    
+def get_round_nr(file_name:str):
+    #get lastest round nr from filename 
+    tokens = file_name.split('_')
+    return tokens[0] #round nr is first
 
 def main():
     #race_data = pd.read_csv("race_results/event_182441_tier_1_results.csv")
@@ -96,7 +84,7 @@ def main():
 
                         result = RaceResult(
                             season = SEASON,
-                            round_nr = get_round_nr(),
+                            round_nr = get_round_nr(file.name),
                             player_name=record["PlayerName"],
                             constructor_name=record["ConstructorName"],
                             track_name = track_name_,
@@ -149,7 +137,7 @@ def main():
 
                         result = QualiResult(
                             season = SEASON,
-                            round_nr = get_round_nr(True),
+                            round_nr = get_round_nr(file.name),
                             player_name=record["PlayerName"],
                             constructor_name=record["ConstructorName"],
                             track_name = track_name_,
