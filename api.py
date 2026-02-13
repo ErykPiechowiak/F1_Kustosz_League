@@ -18,7 +18,7 @@ def fetch_results():
     response = requests.get(
         f"{API_URL}/results",
         headers=headers,
-        timeout=5
+        timeout=60
     )
     response.raise_for_status()
     return response.json()
@@ -31,7 +31,7 @@ def fetch_quali_results():
     response = requests.get(
         f"{API_URL}/quali_results",
         headers=headers,
-        timeout=5
+        timeout=60
     )
     response.raise_for_status()
     return response.json()

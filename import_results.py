@@ -66,6 +66,10 @@ def main():
         if "qualifying" not in file.name:
             if file.name.endswith("_done.csv"):
                 continue
+            if "sprint" in file.name:
+                is_sprint = True
+            else:
+                is_sprint = False
 
             print(f"Importing: {file.name}")
 
@@ -118,7 +122,10 @@ def main():
         else:
             if file.name.endswith("_done.csv"):
                 continue
-
+            if "sprint" in file.name:
+                is_sprint = True
+            else:
+                is_sprint = False
             print(f"Importing: {file.name}")
 
             try:
