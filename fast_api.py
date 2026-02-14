@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
+from sqlalchemy import select, distinct
 from database import RaceResult, get_session, QualiResult
 from typing import Optional
 import os
@@ -72,3 +73,15 @@ def get_quali_results(
         }
         for r in results
     ]
+
+
+@app.get("/drivers_in_season_{season}", dependencies=[Depends(check_token)])
+def get_drivers(season: int, db: Session = Depends(get_session)):
+    query = (
+        select(distinct(RaceResult.player_name))
+        .where(RaceResult.season == season)
+        .order_by(RaceResult.player_name)
+    )
+
+    result = db.execute(query).scalars().all()
+    return result

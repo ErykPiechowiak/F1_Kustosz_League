@@ -35,3 +35,16 @@ def fetch_quali_results():
     )
     response.raise_for_status()
     return response.json()
+
+
+def get_driver_list(season: int):
+    headers = {
+        "Authorization": f"Bearer {TOKEN}"
+    }
+    response = requests.get(
+        f"{API_URL}/drivers_in_season_{season}",
+        headers=headers,
+        timeout=60
+    )
+    response.raise_for_status()
+    return response.json()

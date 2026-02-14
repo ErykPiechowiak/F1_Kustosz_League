@@ -3,6 +3,7 @@ from api import fetch_results
 
 
 def championship_view(page: ft.Page):
+#-------------------------------- DECLARATIONS-------------------------------------------
     results_general = {}
     driver_info = {}
     table = ft.DataTable(

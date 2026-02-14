@@ -1,0 +1,8 @@
+[project]
+name = "F1_Kustosz_League"
+version = "0.1.0"
+
+dependencies = [
+    "flet",
+    "requests"
+]

@@ -3,3 +3,6 @@ venv_kustosz/
 views/__pychache__/
 f1_kustosz_league.db
 credentials.json
+output/
+build/
+*.pyc
