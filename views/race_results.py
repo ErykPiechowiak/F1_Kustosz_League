@@ -63,17 +63,23 @@ def race_results_view(page: ft.Page):
     #-----------------------DROPDOWN FUNCTIONS-----------------------------
 
     #dropdown functions 
-    def update_race_dropdown():
+    def update_race_dropdown(): 
         table.rows.clear()
         results = fetch_results()
-        results_selected_season = []
-        for r in results:
-            if str(r["season"]) == dropdown_season.value:
-                print(r)
-                results_selected_season.append(r)
-        races = sorted({r["track_name"] for r in results_selected_season})
-
-        dropdown_race.options = [ft.dropdown.Option(r) for r in races]   
+    
+        unique_races = {
+            (r["round_nr"], r["track_name"])
+            for r in results
+            if str(r["season"]) == dropdown_season.value
+        }
+    
+        # sortujemy po numerze rundy
+        sorted_races = sorted(unique_races, key=lambda x: x[0])
+    
+        dropdown_race.options = [
+            ft.dropdown.Option(f"{track_name}")
+            for round_nr, track_name in sorted_races
+        ]
     
 
     def init_season_dropdown():

@@ -62,10 +62,8 @@ def main():
             print(f"Importing: {file.name}")
 
             try:
-                # 1. fix CSV
                 clean_trailing_commas(file)
 
-                # 2. pandas
                 race_data = pd.read_csv(file)
                 for record in race_data.to_dict(orient="records"):
                     if pd.isna(list(record.values())).any():
@@ -101,7 +99,6 @@ def main():
 
                 print(f"OK: {file.name}")
 
-                # 3. rename
                 done_file = file.with_name(file.stem + "_done.csv")
                 file.rename(done_file)
 
@@ -117,10 +114,8 @@ def main():
             print(f"Importing: {file.name}")
 
             try:
-                # 1. fix CSV
                 clean_trailing_commas(file)
 
-                # 2. pandas
                 race_data = pd.read_csv(file)
                 for record in race_data.to_dict(orient="records"):
                     if pd.isna(list(record.values())).any():
@@ -150,7 +145,6 @@ def main():
 
                 print(f"OK: {file.name}")
 
-                # 3. rename
                 done_file = file.with_name(file.stem + "_done.csv")
                 file.rename(done_file)
 
