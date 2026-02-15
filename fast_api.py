@@ -85,3 +85,31 @@ def get_drivers(season: int, db: Session = Depends(get_session)):
 
     result = db.execute(query).scalars().all()
     return result
+
+@app.get("/driver-stats-races/{season}/{driver}", dependencies=[Depends(check_token)])
+def get_drivers(season: int, driver: str, db: Session = Depends(get_session)):
+    query = (
+        select(RaceResult)
+        .where(
+            RaceResult.season == season,
+            RaceResult.player_name == driver
+        )
+        .order_by(RaceResult.round_nr)
+    )
+
+    result = db.execute(query).scalars().all()
+    return result
+
+@app.get("/driver-stats-qualis/{season}/{driver}", dependencies=[Depends(check_token)])
+def get_drivers(season: int, driver: str, db: Session = Depends(get_session)):
+    query = (
+        select(QualiResult)
+        .where(
+            QualiResult.season == season,
+            QualiResult.player_name == driver
+        )
+        .order_by(QualiResult.round_nr)
+    )
+
+    result = db.execute(query).scalars().all()
+    return result

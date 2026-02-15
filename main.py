@@ -1,6 +1,8 @@
 import flet as ft
 from views.championship import championship_view
 from views.race_results import race_results_view
+from views.driver_stats import driver_stats_view
+
 
 
 def main(page: ft.Page):
@@ -16,6 +18,10 @@ def main(page: ft.Page):
     def show_race_results(e=None):
         content.controls = [race_results_view(page)]
         page.update()
+    
+    def show_driver_stats(e=None):
+        content.controls = [driver_stats_view(page)]
+        page.update()
 
     page.add(
         ft.Row(
@@ -25,6 +31,7 @@ def main(page: ft.Page):
                     [
                         ft.Button("Championship", on_click=show_championship),
                         ft.Button("GP results", on_click=show_race_results),
+                        ft.Button('Driver Stats', on_click=show_driver_stats)
                     ]
                 ),
             ],

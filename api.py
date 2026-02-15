@@ -48,3 +48,27 @@ def get_driver_list(season: int):
     )
     response.raise_for_status()
     return response.json()
+
+def get_driver_stats_race(season: int, driver: str):
+    headers = {
+        "Authorization": f"Bearer {TOKEN}"
+    }
+    response = requests.get(
+        f"{API_URL}/driver-stats-races/{season}/{driver}",
+        headers=headers,
+        timeout=60
+    )
+    response.raise_for_status()
+    return response.json()
+
+def get_driver_stats_quali(season: int, driver: str):
+    headers = {
+        "Authorization": f"Bearer {TOKEN}"
+    }
+    response = requests.get(
+        f"{API_URL}/driver-stats-qualis/{season}/{driver}",
+        headers=headers,
+        timeout=60
+    )
+    response.raise_for_status()
+    return response.json()
