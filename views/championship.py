@@ -4,6 +4,7 @@ from api import fetch_results
 
 def championship_view(page: ft.Page):
 #-------------------------------- DECLARATIONS-------------------------------------------
+
     results_general = {}
     driver_info = {}
     table = ft.DataTable(
@@ -103,30 +104,34 @@ def championship_view(page: ft.Page):
         dropdown_championship.options = [ft.dropdown.Option(r) for r in championships]
         page.update()
 
-
-
-
-
-
-
-
-
     load_options()
     #load()
 
     return ft.Column(
-        [
+        expand=True,
+        controls=[
             ft.Text("Championship Results", size=24, weight="bold"),
+
             ft.Row(
-                [
+                controls=[
                     dropdown_championship,
                     dropdown_season,
                 ],
-                spacing = 100
-                ),
+                spacing=100
+            ),
 
             ft.Divider(),
             table,
+
+            ft.Container(
+                content=ft.Text(
+                    "Made by erzkoy",
+                    size=12,
+                    italic=True,
+                    opacity=0.6,
+                ),
+                padding=20,
+            ),
         ],
-        expand=True,
     )
+
