@@ -5,9 +5,16 @@ from sqlalchemy import select, distinct
 from database import RaceResult, get_session, QualiResult
 from typing import Optional
 import os
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # później możesz zawęzić
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # PROSTY TOKEN
 TOKEN = os.getenv("API_TOKEN")
 security = HTTPBearer()
