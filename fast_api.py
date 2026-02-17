@@ -6,6 +6,7 @@ from database import RaceResult, get_session, QualiResult
 from typing import Optional
 import os
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 app.add_middleware(
@@ -15,6 +16,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.mount("/", StaticFiles(directory="build/web", html=True), name="web")
+
 # PROSTY TOKEN
 TOKEN = os.getenv("API_TOKEN")
 security = HTTPBearer()
