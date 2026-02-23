@@ -4,7 +4,7 @@ from database import RaceResult, get_session_direct, QualiResult
 from pathlib import Path
 
 is_sprint = False
-SEASON = 1
+SEASON = 2
 
 def clean_trailing_commas(file_path: Path):
     lines = file_path.read_text().splitlines()
