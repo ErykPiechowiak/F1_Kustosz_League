@@ -72,9 +72,11 @@ def race_results_view(page: ft.Page):
             for r in results
             if str(r["season"]) == dropdown_season.value
         }
-    
-        # sortujemy po numerze rundy
-        sorted_races = sorted(unique_races, key=lambda x: x[0])
+        # fix round numbers
+        unique_races_fixed = {(((str(pair[0])).split('-'))[0],pair[1])
+                              for pair in unique_races}
+        # sort races
+        sorted_races = sorted(unique_races_fixed, key=lambda x: x[0])
     
         dropdown_race.options = [
             ft.dropdown.Option(f"{track_name}")
